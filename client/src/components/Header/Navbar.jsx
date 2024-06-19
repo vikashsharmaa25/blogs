@@ -1,59 +1,100 @@
-import React from "react";
-import { NavLink } from "react-router-dom";
+import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { NavLink, useNavigate } from "react-router-dom";
+import { Popover, Button } from "antd";
+import { signOut } from "../../redux/slice/authSlice";
 
 const Navbar = () => {
-  const [isOpen, setIsOpen] = React.useState(false);
+  const dispatch = useDispatch();
+  const navigtte = useNavigate();
+  const { user } = useSelector((state) => state.auth);
+  console.log("user", user);
+
+  const [isOpen, setIsOpen] = useState(false);
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
 
+  const handleLogout = () => {
+    dispatch(signOut());
+    navigtte("/login");
+  };
+
+  const content = (
+    <div className="w-40">
+      <p className="h-8">
+        <NavLink to={user?.role === "admin" ? "/admin" : "/dashboard"}>
+          {user?.role === "admin" ? "Admin Dashboard" : "Dashboard"}
+        </NavLink>
+      </p>
+      <p className="h-8">
+        <NavLink to="/dashboard/likes">My likes</NavLink>
+      </p>
+      <p className="h-8">
+        <button type="text" onClick={handleLogout}>
+          Logout
+        </button>
+      </p>
+    </div>
+  );
+
   return (
-    <nav className="bg-gray-800">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <nav className="bg-transparent">
+      <div className="">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <div className="flex-shrink-0">
-            <NavLink
-              to="/"
-              className="text-white font-bold text-xl"
-              activeClassName="text-gray-300"
-            >
-              Logo
+            <NavLink to="/" className="text-white font-bold uppercase text-2xl">
+              #Blog
             </NavLink>
           </div>
 
           {/* Menu */}
           <div className="hidden md:block">
-            <div className="ml-10 flex items-baseline space-x-4">
+            <div className="ml-10 flex items-center space-x-4">
               <NavLink
                 to="/"
-                className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
-                activeClassName="bg-gray-700 text-white"
+                className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-lg font-medium"
               >
                 Home
               </NavLink>
               <NavLink
                 to="/about"
-                className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
-                activeClassName="bg-gray-700 text-white"
+                className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-lg font-medium"
               >
                 About
               </NavLink>
               <NavLink
-                to="/login"
-                className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
-                activeClassName="bg-gray-700 text-white"
+                to="/contact"
+                className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-lg font-medium"
               >
-                Login
+                Contact
               </NavLink>
-              <NavLink
-                to="/signup"
-                className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
-                activeClassName="bg-gray-700 text-white"
-              >
-                Signup
-              </NavLink>
+              {user?.token ? (
+                <Popover content={content} trigger="click">
+                  <img
+                    src={user?.avatar}
+                    alt=""
+                    className="w-10 h-10 rounded-full object-fill cursor-pointer"
+                  />
+                </Popover>
+              ) : (
+                <>
+                  <NavLink
+                    to="/login"
+                    className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-lg font-medium"
+                  >
+                    Login
+                  </NavLink>
+                  <NavLink
+                    to="/signup"
+                    className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-lg font-medium"
+                  >
+                    Signup
+                  </NavLink>
+                </>
+              )}
             </div>
           </div>
 
@@ -112,28 +153,24 @@ const Navbar = () => {
             <NavLink
               to="/"
               className="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
-              activeClassName="bg-gray-700 text-white"
             >
               Home
             </NavLink>
             <NavLink
               to="/about"
               className="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
-              activeClassName="bg-gray-700 text-white"
             >
               About
             </NavLink>
             <NavLink
               to="/login"
               className="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
-              activeClassName="bg-gray-700 text-white"
             >
               Login
             </NavLink>
             <NavLink
               to="/signup"
               className="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
-              activeClassName="bg-gray-700 text-white"
             >
               Signup
             </NavLink>

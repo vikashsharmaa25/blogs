@@ -9,15 +9,19 @@ import AdminDashboard from "./components/Admin/AdminDashboard";
 import AddBlog from "./components/Admin/AddBlog";
 import { AdminRoute, PrivateRoute } from "./routes/PrivateRoute";
 import Dashboard from "./components/Dashboard/Dashboard";
+import Homepage from "./components/HomePage/Homepage";
 
 function App() {
   const { user } = useSelector((state) => state.auth);
 
   return (
-    <>
+    <div className="px-8">
       <Navbar />
       <Routes>
+        <Route path="/" element={<Homepage />} />
+
         <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
         <Route
           path="/dashboard"
           element={
@@ -42,7 +46,7 @@ function App() {
           <Route path="delete-blog/:id" element={<DeleteBlog />} /> */}
         </Route>
       </Routes>
-    </>
+    </div>
   );
 }
 
