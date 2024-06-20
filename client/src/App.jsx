@@ -1,25 +1,22 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
+import { useSelector } from "react-redux";
+import Navbar from "./components/Header/Navbar";
+import Homepage from "./components/HomePage/Homepage";
 import Login from "./components/Login/Login";
 import Signup from "./components/signup/Signup";
-import Navbar from "./components/Header/Navbar";
-import { useSelector } from "react-redux";
-import AdminLayout from "./components/Admin/AdminLayout";
-import AdminDashboard from "./components/Admin/AdminDashboard";
-import AddBlog from "./components/Admin/AddBlog";
-import { AdminRoute, PrivateRoute } from "./routes/PrivateRoute";
 import Dashboard from "./components/Dashboard/Dashboard";
-import Homepage from "./components/HomePage/Homepage";
+import AdminDashboard from "./components/Admin/AdminDashboard";
+import { AdminRoute, PrivateRoute } from "./routes/PrivateRoute";
+import AddBlog from "./components/Admin/AddBlog";
+import AllBlog from "./components/Admin/Allblog";
 
 function App() {
-  const { user } = useSelector((state) => state.auth);
-
   return (
     <div className="px-8">
       <Navbar />
       <Routes>
         <Route path="/" element={<Homepage />} />
-
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route
@@ -30,20 +27,17 @@ function App() {
             </PrivateRoute>
           }
         />
-
         {/* Admin Routes */}
         <Route
           path="/admin"
           element={
             <AdminRoute>
-              <AdminLayout />
+              <AdminDashboard />
             </AdminRoute>
           }
         >
-          <Route index element={<AdminDashboard />} />
           <Route path="add-blog" element={<AddBlog />} />
-          {/* <Route path="edit-blog/:id" element={<EditBlog />} />
-          <Route path="delete-blog/:id" element={<DeleteBlog />} /> */}
+          <Route path="all-blog" element={<AllBlog />} />
         </Route>
       </Routes>
     </div>

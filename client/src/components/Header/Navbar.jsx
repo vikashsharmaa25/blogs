@@ -24,7 +24,7 @@ const Navbar = () => {
   const content = (
     <div className="w-40">
       <p className="h-8">
-        <NavLink to={user?.role === "admin" ? "/admin" : "/dashboard"}>
+        <NavLink to={user?.role === "admin" ? "/admin/add-blog" : "/dashboard"}>
           {user?.role === "admin" ? "Admin Dashboard" : "Dashboard"}
         </NavLink>
       </p>
